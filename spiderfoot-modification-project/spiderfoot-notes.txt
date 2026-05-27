@@ -1,0 +1,94 @@
+# Spiderfoot Custom
+
+***
+
+## Goal
+To extend Spiderfoot to be utilized for all my osint tasks. I also want to include some AI analysis.
+
+
+## Inactive
+Spiderfoot modules inactive list that need to be curated out of the app.
+```
+Onion.link
+Onionsearchengine.com
+Psbdmp
+RiskIQ
+SORBS
+Sublist3r PassiveDNS
+Threatjammer
+Threatcrowd
+TrashPanda
+Zonefile.io
+```
+
+
+
+Useful modules
+
+sfp_dnsraw - This one is good for all DNS Info
+sfp_dnsresolve - try to resolve the domain name to an IP
+sfp_whois - whois data
+
+
+
+To modify the nameAPI module, this is the curl command that tells me if the email address is disposable:
+curl -X GET "http://api.nameapi.org/rest/v5.3/email/disposableemailaddressdetector?apiKey=4f03f85e0309bf01fde4adbbb089c5f3-user1&emailAddress=acidicloop@gmail.com"
+
+
+
+curl -X GET "http://api.nameapi.org/rest/v5.3/email/emailnameparser?apiKey=4f03f85e0309bf01fde4adbbb089c5f3-user1&emailAddress=acidicloop@gmail.com"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
