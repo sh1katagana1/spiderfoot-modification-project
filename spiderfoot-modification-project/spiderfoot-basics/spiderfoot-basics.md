@@ -1,3 +1,10 @@
+# Spiderfoot Basics
+
+***
+
+## Summary
+I will be doing a lot of modification to the default open source Spiderfoot to accomplish having a good OSINT tool with graphing and correlations. Before that happens, we need to understand how Spiderfoot works, so let's tear it up!
+
 ## Spiderfoot Install
 Navigate to https://github.com/smicallef/spiderfoot and you will see all the different details and structure of Spiderfoot. You can install it from source or use Docker. For this tutorial we will install from source.
 ```
