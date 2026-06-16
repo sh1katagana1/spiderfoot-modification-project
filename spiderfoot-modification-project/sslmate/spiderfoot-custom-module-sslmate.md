@@ -541,9 +541,7 @@ prints an error in SpiderFoot. Then:
 ```
 self.errorState = True
 ```
-tells the module:
-```
-Stop querying. This prevents hammering SSLMate with bad requests. Another example is:
+tells the module: Stop querying. This prevents hammering SSLMate with bad requests. Another example is:
 ```
 if res['content'] is None:
 ```
