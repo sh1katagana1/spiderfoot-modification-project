@@ -17,7 +17,7 @@ The output snippet looks like:
                 "id":"14215808107",
                 "tbs_sha256":"c81473b523103d6b9718cf2dd9a4fe4f64d9591d7091b104801929982ffc5ac0",
                 "cert_sha256":"c68ceb2ff3d93a66447a77a2b794fc61f8ecf3e8b22cec5784c2b2be6fef6f0e",
-                "dns_names":["rubiks.trinet.com","trinet.com","www.trinet.com"],
+                "dns_names":[.example.com","example.com","www.example.com"],
                 "pubkey_sha256":"8dad766c0ab0856689171652039024d3caf4e0a90e6ff062151b7cd853e26ea3",
                 "issuer":{"friendly_name":"Let's Encrypt","pubkey_sha256":"885bf0572252c6741dc9a52f5044487fef2a93b811cdedfad7624cc283b7cdd5","name":"C=US, O=Let's Encrypt, CN=E8"},
                 "not_before":"2026-03-21T14:42:02Z",
