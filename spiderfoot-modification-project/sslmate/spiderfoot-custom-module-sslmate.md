@@ -590,8 +590,8 @@ So for this whole 'query' function, it doesnt produce any events, it just constr
 ### Handle Events Function
 This is the most important function in the whole module. If query() is the part that asks SSLMate for data, then handleEvent() is the part that turns that data into SpiderFoot events. 
 
-1. def handleEvent(self, event): SpiderFoot automatically calls this whenever it finds an event type that our module watches. Earlier we made the watchedEvents function that stated it is waiting on a DOMAIN_NAME event to appear. When it does, fire this function off. 
-2. Next is error event handling:
+* def handleEvent(self, event): SpiderFoot automatically calls this whenever it finds an event type that our module watches. Earlier we made the watchedEvents function that stated it is waiting on a DOMAIN_NAME event to appear. When it does, fire this function off. 
+* Next is error event handling:
 ```
 if self.errorState:
     return
@@ -605,19 +605,19 @@ Then every future event immediately exits:
 return
 ```
 which means: Stop processing.
-3. Next we extract the event data:
+* Next we extract the event data:
 ```
 eventData = event.data
 ```
 If we kicked off the scan by sending example.com, then eventData=example.com.
-4. Next we do some debug logging:
+* Next we do some debug logging:
 ```
 self.debug(
     f"Received event {event.eventType}: {eventData}"
 )
 ```
 This prints "Received event DOMAIN_NAME: example.com" This is purely for debugging.
-5. Next we verify if the API key exists:
+* Next we verify if the API key exists:
 ```
 if not self.opts['api_key']:
 ```
@@ -630,7 +630,7 @@ prints:
 You enabled sfp_sslmate but did not configure an API key.
 ```
 and quits.
-6. Next we check for duplicates:
+* Next we check for duplicates:
 ```
 if eventData in self.results:
 ```
@@ -657,7 +657,7 @@ If we see it again:
 return
 ```
 Prevents duplicate API calls.
-7. Then we mark it as processed:
+* Then we mark it as processed:
 ```
 self.results[eventData] = True
 ```
@@ -668,12 +668,12 @@ Adds:
 }
 ```
 to the cache.
-8. Next we query SSLMate
+* Next we query SSLMate
 ```
 certs = self.query(eventData)
 ```
 Again, think of eventData as being 'example.com'. 
-9. What if there are no results?
+* What if there are no results?
 ```
 if not certs:
     return
@@ -687,7 +687,7 @@ or:
 []
 ```
 Then stop processing.
-10. Next we check the current time:
+* Next we check the current time:
 ```
 now = datetime.now(timezone.utc)
 ```
@@ -696,7 +696,7 @@ Gets:
 Current UTC time
 ```
 Used later for expiration checks. Example: 2026-06-15 21:00 UTC
-11. next we create tracking sets:
+* next we create tracking sets:
 ```
 seen_names = set()
 seen_hashes = set()
@@ -712,7 +712,7 @@ Gives the result:
 {"www.trinet.com"}
 ```
 Only once. 
-12. Next we process each certificate:
+* Next we process each certificate:
 ```
 for cert in certs:
 ```
@@ -725,11 +725,11 @@ Suppose SSLMate returned:
 ]
 ```
 This loops through them one at a time.
-13. Next we get the SHA256 hash:
+* Next we get the SHA256 hash:
 ```
 cert_hash = cert.get("cert_sha256")
 ```
-14. Then we emit the SHA256 event:
+* Then we emit the SHA256 event:
 ```
 hash_evt = SpiderFootEvent(
     "SSL_CERTIFICATE_SHA256",
@@ -739,22 +739,22 @@ hash_evt = SpiderFootEvent(
 )
 ```
 This is using the Spiderfoot plugin import we did at the top of the script to create an event, putting the value of cert_hash in the Event SSL_CERTIFICATE_SHA256.
-15. Then we send the event:
+* Then we send the event:
 ```
 self.notifyListeners(hash_evt)
 ```
 If there are other activated modules in the scan that have in their watchedEvents list SSL_CERTIFICATE_SHA256, then they want to know that the SSLMate module produced that event. This notifies all listening. 
-16. Next we make the raw JSON for the RAW event type:
+* Next we make the raw JSON for the RAW event type:
 ```
 raw_json = json.dumps(cert, indent=2)
 ```
 This converts the Python object into JSON readable text.
-17. next we make the parent event logic:
+* next we make the parent event logic:
 ```
 raw_parent = hash_evt if hash_evt else event
 ```
 This means: If SHA256 event exists, attach RAW data to it. Otherwise attach to original domain.
-18. Next we create the RAW data event:
+* Next we create the RAW data event:
 ```
 raw_evt = SpiderFootEvent(
     "SSL_CERTIFICATE_RAW",
@@ -764,7 +764,7 @@ raw_evt = SpiderFootEvent(
 )
 ```
 This stuffs the values of what the previous command did(converting Python objects into JSON) into the Event type SSL_CERTIFICATE_RAW. Now that event will contain the full JSON raw data.
-19. Next we get the Cert Issuer data:
+* Next we get the Cert Issuer data:
 ```
 issuer = cert.get("issuer", {})
 ```
@@ -783,7 +783,7 @@ And the value now becomes:
 Let's Encrypt
 ```
 Same steps above to create the Issuer event.
-20. Next we get the DNS Names section:
+* Next we get the DNS Names section:
 ```
 dns_names = cert.get("dns_names", [])
 ```
@@ -800,7 +800,7 @@ Loop:
 for name in dns_names:
 ```
 processes each one.
-21. Next we configure to ignore wildcards:
+* Next we configure to ignore wildcards:
 ```
 if name.startswith("*."):
     continue
@@ -810,7 +810,7 @@ That would skip:
 *.trinet.com
 ```
 Because its a wildcard. 
-22. Next we want to determine the root domain (Apex Domain)
+* Next we want to determine the root domain (Apex Domain)
 ```
 root_domain = self.sf.hostDomain(
     name,
@@ -825,7 +825,7 @@ This section of code makes it:
 ```
 trinet.com
 ```
-23. Then it does an if/else, basically saying if:
+* Then it does an if/else, basically saying if:
 ```
 root_domain == name
 ```
@@ -838,7 +838,7 @@ Otherwise create:
 INTERNET_NAME
 ```
 Which corresponds with subdomains like www
-24. Next we get expiration data:
+* Next we get expiration data:
 ```
 expiry = cert.get("not_after")
 ```
@@ -853,14 +853,14 @@ expiry_dt = datetime.fromisoformat(
 )
 ```
 Now Python can do date math.
-25. Next we calculate the days remaining:
+* Next we calculate the days remaining:
 ```
 days_remaining = (
     expiry_dt - now
 ).total_seconds() / 86400
 ```
 Remember in our opts UI settings we had 30 days as a default expiry. 
-26. Next we create readable text:
+* Next we create readable text:
 ```
 event_text = (
     f"SHA256={cert_hash} | "
@@ -876,7 +876,7 @@ Issuer=Let's Encrypt
 NotBefore=2026-03-21...
 NotAfter=2026-06-19...
 ```
-27. What if its expired?
+* What if its expired?
 ```
 if expiry_dt < now:
 ```
@@ -884,7 +884,7 @@ Then create the event:
 ```
 SSL_CERTIFICATE_EXPIRED
 ```
-28. What if its not expired but it is expiring soon (within 30 days)?
+* What if its not expired but it is expiring soon (within 30 days)?
 ```
 elif days_remaining <= int(
     self.opts["expiring_days"]
