@@ -464,7 +464,7 @@ def query(self, domain):
             return None
 ```
 This is the part that actually talks to SSLMate. 
-1. def query(self, domain): This creates a function named query. When SpiderFoot finds a domain like: example.com, the code later does:
+* def query(self, domain): This creates a function named query. When SpiderFoot finds a domain like: example.com, the code later does:
 ```
 certs = self.query(eventData)
 ```
@@ -480,7 +480,7 @@ contains:
 ```
 example.com
 ```
-2. Next it builds the authentication header that is required for the API:
+* Next it builds the authentication header that is required for the API:
 ```
 headers = {
     "Authorization": f"Bearer {self.opts['api_key']}"
@@ -493,7 +493,7 @@ name = "Bob"
 print(f"Hello {name}")
 ```
 You made the variable 'name' with a value of Bob. Now any strings in your script that need that, you can reference it with {name}. The f-string makes this happen. 
-3. Next it builds the URL
+* Next it builds the URL
 ```
 url = (
     "https://api.certspotter.com/v1/issuances"
@@ -505,7 +505,7 @@ url = (
 )
 ```
 That is the URL parameters given in the SSLMate API documentation. 
-4. Next it makes the HTTP request:
+* Next it makes the HTTP request:
 ```
 res = self.sf.fetchUrl(
     url,
@@ -525,7 +525,7 @@ which handles the following things for you:
 * user agents
 * logging
 The res variable name is just a friendly name indicating the response. 
-5. Next it handles the HTTP methods returned. These are things like 200 if the request was successful, 404 if the page is not found, 403 if its forbidden for you to see the page, etc. This section does if/else clauses to say "if this method is returned, do this" For example:
+* Next it handles the HTTP methods returned. These are things like 200 if the request was successful, 404 if the page is not found, 403 if its forbidden for you to see the page, etc. This section does if/else clauses to say "if this method is returned, do this" For example:
 ```
 if res['code'] in ["401", "403", "429"]:
 ```
@@ -546,7 +546,7 @@ tells the module: Stop querying. This prevents hammering SSLMate with bad reques
 if res['content'] is None:
 ```
 Sometimes the request succeeds but returns nothing. If this is the case, self.info(...) logs: No SSLMate results found for example.com and then it exits. 
-6. Next it will parse the JSON it receives. For example, if SSLMate gives it:
+* Next it will parse the JSON it receives. For example, if SSLMate gives it:
 ```
 [
     {
@@ -573,7 +573,7 @@ and converts it into:
 ]
 ```
 Now Python can work with it.
-7. Next it does more error handling using something called try/except. 
+* Next it does more error handling using something called try/except. 
 ```
 try:
             return json.loads(res['content'])
