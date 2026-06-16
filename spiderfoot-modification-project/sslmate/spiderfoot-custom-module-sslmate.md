@@ -837,7 +837,7 @@ Otherwise create:
 ```
 INTERNET_NAME
 ```
-Which corresponds with subdomains like www.
+Which corresponds with subdomains like www
 24. Next we get expiration data:
 ```
 expiry = cert.get("not_after")
