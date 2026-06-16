@@ -649,7 +649,7 @@ self.results
 looks like:
 ```
 {
-    "trinet.com": True
+    "example.com": True
 }
 ```
 If we see it again:
@@ -664,7 +664,7 @@ self.results[eventData] = True
 Adds:
 ```
 {
-    "trinet.com": True
+    "example.com": True
 }
 ```
 to the cache.
@@ -704,12 +704,12 @@ seen_issuers = set()
 ```
 A set is like a list that automatically prevents duplicates. As an example:
 ```
-seen_names.add("www.trinet.com")
-seen_names.add("www.trinet.com")
+seen_names.add("www.example.com")
+seen_names.add("www.example.com")
 ```
 Gives the result:
 ```
-{"www.trinet.com"}
+{"www.example.com"}
 ```
 Only once. 
 * Next we process each certificate:
@@ -790,9 +790,9 @@ dns_names = cert.get("dns_names", [])
 Because its an array, it gets:
 ```
 [
-  "trinet.com",
-  "www.trinet.com",
-  "rubiks.trinet.com"
+  "example.com",
+  "www.example.com",
+  "rubiks.example.com"
 ]
 ```
 Loop:
@@ -807,7 +807,7 @@ if name.startswith("*."):
 ```
 That would skip:
 ```
-*.trinet.com
+*.example.com
 ```
 Because its a wildcard. 
 * Next we want to determine the root domain (Apex Domain)
@@ -819,17 +819,17 @@ root_domain = self.sf.hostDomain(
 ```
 If we have
 ```
-www.trinet.com
+www.example.com
 ```
 This section of code makes it:
 ```
-trinet.com
+example.com
 ```
 * Then it does an if/else, basically saying if:
 ```
 root_domain == name
 ```
-Where name is trinet.com, then create:
+Where name is example.com, then create:
 ```
 DOMAIN_NAME
 ```
